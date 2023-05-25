@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 Data Migration - Round 2 Detailed Task.docx
 *.png
+.vscode/

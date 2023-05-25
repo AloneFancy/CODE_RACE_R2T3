@@ -132,7 +132,7 @@
       "VAR_FUNC_SYS": "Var_func_sys value 2",
       "ReqIF.Text": "<div xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<p dir=\"ltr\" id=\"_1454505869759\">&lt;description of the non functional requirement in requirements language&gt;</p>\r\n</div>",
       "Identifier": 629014,
-	  "Allocation": "Non_Func Allocation",
+	    "Allocation": "Non_Func Allocation",
       "Safety Classification": "ASIL B"
     }
   ]
