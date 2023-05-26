@@ -5,3 +5,13 @@ BOSCH_CODERACE 2023 ROUND 2_DATA MIGRATION Topic 3
 ```python
 pip install -r requirements.txt
 ```
+
+# Run
+Input: **Requirements.reqif**
+
+Command line:
+```
+python final.py
+```
+
+Output: **data.json**, **ECU_REQ.rst**
