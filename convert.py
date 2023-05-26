@@ -24,7 +24,6 @@ def RSTfile(data):
             substring = substring.replace("/>","")
             regex = re.compile("xmlns=\".*\"")
             substring = re.sub(regex,'', substring)
-            print(substring)
             Raw_file+=output_html_code(substring)
         else:
             Raw_file+='\n'*2 + '.. sw_req::\n'
@@ -34,9 +33,10 @@ def RSTfile(data):
             Raw_file+='\t:artifact_type: '+str(scope["Attribute Type"]) +'\n'
             Raw_file+='\t:crq: '+str(scope["CRQ"]) +'\n'
             Raw_file+= 2*'\n'+'\t'+scope["Title"] + '\n'
-
+            if scope['Attribute Type']=='MO_FUNC_REQ':
+                Raw_file+='\n'+ output_html_code(scope['ReqIF.Text'])
             Raw_file+='\n'*2 + '   .. verify::\n\n'
-            Raw_file+=         "      "+re.sub('\n','\n\t\t',scope["Verification Criteria"])
+            Raw_file+=         "\t\t"+re.sub('\n','\n\t\t',scope["Verification Criteria"])
     return Raw_file
 
 def return_key(long_name):
@@ -53,7 +53,7 @@ def return_key(long_name):
     elif long_name =="ReqIF.Description":return None
     elif long_name=="Artifact Format":return None
     elif long_name=="ReqIF.ForeignModifiedOn":return None
-    elif long_name=="ReqIF.ChapterName":return None
+    elif long_name=="ReqIF.ChapterName":return None    
     return long_name
 
 def process_value(key,value):
@@ -61,6 +61,10 @@ def process_value(key,value):
         return int(value)
     elif key=='Title':
         return output_html_code(value)
+    elif key=='Safety Classification':
+        return value[0]
+    elif key=='Status':
+        return value[0]
     elif key==None:
         pass
     return value

@@ -21,13 +21,13 @@ def return_list():
         obj["Attribute Type"]=reqif_bundle.get_spec_object_type_by_ref(b.spec_object_type).long_name#heading(i.spec_object_type)
         obj["Modified On"]=i.last_change
         obj["Description"]=i.description if i.description else ""
-        obj["ReqIF-Text"]=""
+        obj["ReqIF.Text"]=""
         #print("\n")        
         for key in i.attribute_map:
             def_ref = i.attribute_map.get(key).definition_ref
             obj[return_key(def_dictionary[def_ref])]=process_value(return_key(def_dictionary[def_ref]),i.attribute_map.get(key).value)
-        obj.pop(None)
 
+        obj.pop(None)
         list[i.identifier]=obj
     final = []
     for specification in reqif_bundle.core_content.req_if_content.specifications:
@@ -55,3 +55,5 @@ if __name__ == "__main__":
     with open('ECU_Req.rst','w')as f:
         f.flush()
         f.write(RSTfile(data))
+    for i in reqif_bundle.core_content.req_if_content.data_types:
+        print(str(i.identifier)+'\n')
