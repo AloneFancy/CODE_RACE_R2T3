@@ -1,12 +1,16 @@
 from bs4 import BeautifulSoup
-from html.parser import HTMLParser
 import re
 
-def output_html_code(html):
-
-    return BeautifulSoup(html,features="lxml").get_text()
+def resolve_html_code(html):
+    """
+    Resolve Html code
+    """    
+    return BeautifulSoup(html,features="html.parser").get_text()
 
 def RSTfile(data):
+    """
+    Extract data into formatted file
+    """
     Raw_file="\n"
     Raw_file+="="*len(data["Module Name"]) + "\n"
     Raw_file+=data["Module Name"] + "\n"
@@ -24,7 +28,7 @@ def RSTfile(data):
             substring = substring.replace("/>","")
             regex = re.compile("xmlns=\".*\"")
             substring = re.sub(regex,'', substring)
-            Raw_file+=output_html_code(substring)
+            Raw_file+=resolve_html_code(substring)
         else:
             Raw_file+='\n'*2 + '.. sw_req::\n'
             Raw_file+='\t:status: '+str(scope["Status"]) +'\n'
@@ -34,37 +38,32 @@ def RSTfile(data):
             Raw_file+='\t:crq: '+str(scope["CRQ"]) +'\n'
             Raw_file+= 2*'\n'+'\t'+scope["Title"] + '\n'
             if scope['Attribute Type']=='MO_FUNC_REQ':
-                Raw_file+='\n'+ output_html_code(scope['ReqIF.Text'])
+                regex = re.compile("xmlns=\".*\"")
+                substring = scope['ReqIF.Text'].replace("\u00a0","\n")
+                Raw_file+='\n'+ resolve_html_code(substring)
+                
             Raw_file+='\n'*2 + '   .. verify::\n\n'
             Raw_file+=         "\t\t"+re.sub('\n','\n\t\t',scope["Verification Criteria"])
     return Raw_file
 
 def return_key(long_name):
-    if long_name=='ReqIF.ForeignModifiedBy':
+    """
+    Convert string values to keys
+    """
+    if long_name == 'ReqIF.ForeignModifiedBy':
         return 'Contributor'
-    elif long_name =='ReqIF.ForeignCreatedBy':
+    elif long_name == 'ReqIF.ForeignCreatedBy':
         return 'Creator'
-    elif long_name =='ReqIF.ForeignCreatedOn':
+    elif long_name == 'ReqIF.ForeignCreatedOn':
         return 'Created On'
-    elif long_name =='ReqIF.ForeignID':
+    elif long_name == 'ReqIF.ForeignID':
         return 'Identifier'
-    elif long_name =='ReqIF.Name':
+    elif long_name == 'ReqIF.Name':
         return 'Title'
-    elif long_name =="ReqIF.Description":return None
-    elif long_name=="Artifact Format":return None
-    elif long_name=="ReqIF.ForeignModifiedOn":return None
-    elif long_name=="ReqIF.ChapterName":return None    
+    elif long_name == "ReqIF.Description"        :return None
+    elif long_name == "Artifact Format"          :return None
+    elif long_name == "ReqIF.ForeignModifiedOn"  :return None
+    elif long_name == "ReqIF.ChapterName"        :return None    
+    
     return long_name
 
-def process_value(key,value):
-    if key=='Identifier':
-        return int(value)
-    elif key=='Title':
-        return output_html_code(value)
-    elif key=='Safety Classification':
-        return value[0]
-    elif key=='Status':
-        return value[0]
-    elif key==None:
-        pass
-    return value
