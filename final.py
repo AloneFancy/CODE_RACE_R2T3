@@ -101,7 +101,7 @@ if __name__ == "__main__":
             f.write(RSTfile(data))
         f.close()
     except: 
-        Exception("Wrong path")
+        Exception("Wrong path")#adad
     
     
 
